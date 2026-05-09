@@ -1,0 +1,151 @@
+++ JavaScript Codebox Example
+
+[[include snippet:codebox
+|title=JavaScript Utility Example
+|lang=javascript
+]]
+
+/**
+ * Small utility module example for Wikidot Codebox.
+ */
+
+const STORAGE_KEY = "demo-items";
+
+function readItems() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    const parsed = JSON.parse(raw || "[]");
+
+    return Array.isArray(parsed) ? parsed : [];
+  } catch (error) {
+    console.warn("Failed to read items:", error);
+    return [];
+  }
+}
+
+function writeItems(items) {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(items, null, 2));
+    return true;
+  } catch (error) {
+    console.error("Failed to write items:", error);
+    return false;
+  }
+}
+
+function createItem(title, tags) {
+  return {
+    id: crypto.randomUUID(),
+    title: String(title || "").trim(),
+    tags: Array.isArray(tags) ? tags.filter(Boolean) : [],
+    createdAt: new Date().toISOString(),
+    completed: false
+  };
+}
+
+function addItem(title, tags) {
+  const nextItem = createItem(title, tags);
+
+  if (!nextItem.title) {
+    throw new Error("Title is required.");
+  }
+
+  const items = readItems();
+  const nextItems = [nextItem, ...items];
+
+  writeItems(nextItems);
+
+  return nextItem;
+}
+
+function toggleItem(id) {
+  const items = readItems();
+
+  const nextItems = items.map(function (item) {
+    if (item.id !== id) {
+      return item;
+    }
+
+    return {
+      ...item,
+      completed: !item.completed,
+      updatedAt: new Date().toISOString()
+    };
+  });
+
+  writeItems(nextItems);
+
+  return nextItems;
+}
+
+function filterItems(items, query) {
+  const normalizedQuery = String(query || "").toLowerCase().trim();
+
+  if (!normalizedQuery) {
+    return items;
+  }
+
+  return items.filter(function (item) {
+    const title = String(item.title || "").toLowerCase();
+    const tags = Array.isArray(item.tags) ? item.tags.join(" ").toLowerCase() : "";
+
+    return title.includes(normalizedQuery) || tags.includes(normalizedQuery);
+  });
+}
+
+async function fetchJson(url, options) {
+  const response = await fetch(url, {
+    headers: {
+      "Accept": "application/json"
+    },
+    ...options
+  });
+
+  if (!response.ok) {
+    throw new Error("Request failed: " + response.status);
+  }
+
+  return response.json();
+}
+
+function renderItems(container, items) {
+  container.innerHTML = "";
+
+  if (!items.length) {
+    const empty = document.createElement("p");
+    empty.className = "empty-state";
+    empty.textContent = "No items found.";
+    container.appendChild(empty);
+    return;
+  }
+
+  const list = document.createElement("ul");
+  list.className = "item-list";
+
+  for (const item of items) {
+    const li = document.createElement("li");
+    li.className = item.completed ? "is-completed" : "";
+
+    const button = document.createElement("button");
+    button.type = "button";
+    button.textContent = item.completed ? "Undo" : "Done";
+    button.addEventListener("click", function () {
+      toggleItem(item.id);
+      renderItems(container, readItems());
+    });
+
+    const title = document.createElement("span");
+    title.textContent = item.title;
+
+    li.appendChild(title);
+    li.appendChild(button);
+    list.appendChild(li);
+  }
+
+  container.appendChild(list);
+}
+
+const demoItem = addItem("Write Codebox documentation", ["wikidot", "docs"]);
+console.log("Created:", demoItem);
+
+[[include snippet:codebox-end]]

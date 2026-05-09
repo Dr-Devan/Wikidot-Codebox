@@ -1,0 +1,8 @@
+[[include snippet:codebox-base
+|title{$title}=Code
+|title={$title}
+|title=Code
+|lang{$lang}=plaintext
+|lang={$lang}
+|lang=plaintext
+]]

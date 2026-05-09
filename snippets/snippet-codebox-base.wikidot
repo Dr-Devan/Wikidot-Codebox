@@ -1,0 +1,723 @@
+[[html]]
+<style>
+@import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0..1,0");
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: transparent;
+}
+
+body {
+  color: #c9d1d9;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.material-symbols-outlined {
+  font-family: "Material Symbols Outlined";
+  font-weight: normal;
+  font-style: normal;
+  font-size: 20px;
+  line-height: 1;
+  display: inline-block;
+  text-transform: none;
+  letter-spacing: normal;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-feature-settings: "liga";
+  -webkit-font-smoothing: antialiased;
+  font-variation-settings:
+    "FILL" 0,
+    "wght" 400,
+    "GRAD" 0,
+    "opsz" 24;
+}
+
+.wd-codebox-icon-button .material-symbols-outlined {
+  font-size: 20px;
+}
+
+.wd-codebox-toast-icon.material-symbols-outlined {
+  font-size: 18px;
+  font-variation-settings:
+    "FILL" 1,
+    "wght" 500,
+    "GRAD" 0,
+    "opsz" 24;
+}
+
+.wd-codebox {
+  --wd-bg: #0d1117;
+  --wd-panel: #161b22;
+  --wd-border: #30363d;
+  --wd-text: #c9d1d9;
+  --wd-title: #f0f6fc;
+  --wd-muted: #8b949e;
+  --wd-button: #21262d;
+  --wd-button-hover: #30363d;
+  --wd-success: #3fb950;
+  --wd-error: #ff7b72;
+  --wd-line: #6e7681;
+
+  --wd-scrollbar-track: transparent;
+  --wd-scrollbar-thumb: #30363d;
+  --wd-scrollbar-thumb-hover: #6e7681;
+  --wd-scrollbar-corner: #0d1117;
+
+  --wd-token-block: #7ee787;
+  --wd-token-close: #7ee787;
+  --wd-token-param: #ffa657;
+  --wd-token-value: #c9d1d9;
+  --wd-token-link-url: #a5d6ff;
+  --wd-token-link-label: #c9d1d9;
+  --wd-token-format: #d2a8ff;
+  --wd-token-heading: #79c0ff;
+  --wd-token-table: #ffdf5d;
+  --wd-token-table-header: #79c0ff;
+  --wd-token-table-cell: #c9d1d9;
+  --wd-token-keyword: #ff7b72;
+  --wd-token-string: #a5d6ff;
+  --wd-token-function: #d2a8ff;
+  --wd-token-comment: #8b949e;
+  --wd-token-punctuation: #8b949e;
+  --wd-token-include: #7ee787;
+  --wd-token-include-keyword: #7ee787;
+  --wd-token-include-target: #d2a8ff;
+  --wd-token-module-name: #ffdf5d;
+  --wd-token-tab-title: #a5d6ff;
+  --wd-token-color-name: #ffdf5d;
+  --wd-token-color-text: #c9d1d9;
+  --wd-token-variable-name: #d2a8ff;
+  --wd-token-variable-mark: #8b949e;
+
+  --wd-codebox-collapsed-height: 520px;
+  --wd-codebox-expanded-height: 960px;
+
+  position: relative;
+  border: 1px solid var(--wd-border);
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--wd-bg);
+  color: var(--wd-text);
+  margin: 0;
+}
+
+.wd-codebox[data-theme="light"] {
+  --wd-bg: #ffffff;
+  --wd-panel: #f6f8fa;
+  --wd-border: #d0d7de;
+  --wd-text: #333333;
+  --wd-title: #333333;
+  --wd-muted: #57606a;
+  --wd-button: #f6f8fa;
+  --wd-button-hover: #eaeef2;
+  --wd-success: #1a7f37;
+  --wd-error: #cf222e;
+  --wd-line: #8c959f;
+
+  --wd-scrollbar-track: transparent;
+  --wd-scrollbar-thumb: #d0d7de;
+  --wd-scrollbar-thumb-hover: #8c959f;
+  --wd-scrollbar-corner: #ffffff;
+
+  --wd-token-block: #1a7f37;
+  --wd-token-close: #1a7f37;
+  --wd-token-param: #953800;
+  --wd-token-value: #333333;
+  --wd-token-link-url: #0969da;
+  --wd-token-link-label: #333333;
+  --wd-token-format: #8250df;
+  --wd-token-heading: #0969da;
+  --wd-token-table: #9a6700;
+  --wd-token-table-header: #0969da;
+  --wd-token-table-cell: #333333;
+  --wd-token-keyword: #cf222e;
+  --wd-token-string: #0a3069;
+  --wd-token-function: #8250df;
+  --wd-token-comment: #6e7781;
+  --wd-token-punctuation: #6e7781;
+  --wd-token-include: #1a7f37;
+  --wd-token-include-keyword: #1a7f37;
+  --wd-token-include-target: #8250df;
+  --wd-token-module-name: #9a6700;
+  --wd-token-tab-title: #0969da;
+  --wd-token-color-name: #9a6700;
+  --wd-token-color-text: #333333;
+  --wd-token-variable-name: #8250df;
+  --wd-token-variable-mark: #6e7781;
+}
+
+.wd-codebox[data-theme="dark"] {
+  --wd-bg: #0d1117;
+  --wd-panel: #161b22;
+  --wd-border: #30363d;
+  --wd-text: #c9d1d9;
+  --wd-title: #f0f6fc;
+  --wd-muted: #8b949e;
+  --wd-button: #21262d;
+  --wd-button-hover: #30363d;
+  --wd-success: #3fb950;
+  --wd-error: #ff7b72;
+  --wd-line: #6e7681;
+
+  --wd-scrollbar-track: transparent;
+  --wd-scrollbar-thumb: #30363d;
+  --wd-scrollbar-thumb-hover: #6e7681;
+  --wd-scrollbar-corner: #0d1117;
+
+  --wd-token-block: #7ee787;
+  --wd-token-close: #7ee787;
+  --wd-token-param: #ffa657;
+  --wd-token-value: #c9d1d9;
+  --wd-token-link-url: #a5d6ff;
+  --wd-token-link-label: #c9d1d9;
+  --wd-token-format: #d2a8ff;
+  --wd-token-heading: #79c0ff;
+  --wd-token-table: #ffdf5d;
+  --wd-token-table-header: #79c0ff;
+  --wd-token-table-cell: #c9d1d9;
+  --wd-token-keyword: #ff7b72;
+  --wd-token-string: #a5d6ff;
+  --wd-token-function: #d2a8ff;
+  --wd-token-comment: #8b949e;
+  --wd-token-punctuation: #8b949e;
+  --wd-token-include: #7ee787;
+  --wd-token-include-keyword: #7ee787;
+  --wd-token-include-target: #d2a8ff;
+  --wd-token-module-name: #ffdf5d;
+  --wd-token-tab-title: #a5d6ff;
+  --wd-token-color-name: #ffdf5d;
+  --wd-token-color-text: #c9d1d9;
+  --wd-token-variable-name: #d2a8ff;
+  --wd-token-variable-mark: #8b949e;
+}
+
+.wd-codebox-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+  background: var(--wd-panel);
+  border-bottom: 1px solid var(--wd-border);
+}
+
+.wd-codebox-title {
+  color: var(--wd-title);
+  font-family: sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.wd-codebox-meta {
+  margin-top: 2px;
+  color: var(--wd-muted);
+  font-family: sans-serif;
+  font-size: 11px;
+}
+
+.wd-codebox-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.wd-theme-switch {
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+}
+
+.wd-theme-switch-input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.wd-theme-switch-track {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 58px;
+  height: 28px;
+  padding: 0 6px;
+  border: 1px solid var(--wd-border);
+  border-radius: 999px;
+  background: var(--wd-button);
+  color: var(--wd-muted);
+  box-sizing: border-box;
+  transition: background 160ms ease, border-color 160ms ease, color 160ms ease;
+}
+
+.wd-theme-switch:hover .wd-theme-switch-track {
+  background: var(--wd-button-hover);
+}
+
+.wd-theme-switch-thumb {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 20px;
+  height: 20px;
+  border-radius: 999px;
+  background: var(--wd-text);
+  transition: transform 160ms ease, background 160ms ease;
+  z-index: 2;
+}
+
+.wd-theme-switch-icon {
+  position: relative;
+  z-index: 1;
+  font-size: 16px;
+  line-height: 1;
+}
+
+.wd-theme-switch-input:checked + .wd-theme-switch-track .wd-theme-switch-thumb {
+  transform: translateX(30px);
+}
+
+.wd-theme-switch-input:checked + .wd-theme-switch-track {
+  color: var(--wd-token-heading);
+}
+
+.wd-theme-switch-input:focus-visible + .wd-theme-switch-track {
+  outline: 2px solid var(--wd-token-heading);
+  outline-offset: 2px;
+}
+
+.wd-codebox-icon-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 28px;
+  border: 1px solid var(--wd-border);
+  border-radius: 7px;
+  background: var(--wd-button);
+  color: var(--wd-text);
+  cursor: pointer;
+  font-size: 15px;
+  line-height: 1;
+}
+
+.wd-codebox-icon-button:hover {
+  background: var(--wd-button-hover);
+}
+
+.wd-codebox-expand .material-symbols-outlined,
+.wd-codebox-wrap .material-symbols-outlined {
+  font-size: 20px;
+}
+
+.wd-codebox-wrap[aria-pressed="true"] {
+  color: var(--wd-token-heading);
+  border-color: var(--wd-token-heading);
+}
+
+.wd-codebox-body {
+  display: grid;
+  grid-template-columns: 4.2em minmax(0, 1fr);
+  background: var(--wd-bg);
+}
+
+.wd-codebox-lines {
+  max-height: var(--wd-codebox-collapsed-height);
+  overflow: hidden;
+  padding: 14px 1em 14px 0;
+  border-right: 1px solid var(--wd-border);
+  color: var(--wd-line);
+  background: var(--wd-bg);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  font-size: 13px;
+  line-height: 1.55;
+  text-align: right;
+  user-select: none;
+  box-sizing: border-box;
+}
+
+.wd-codebox-lines span {
+  display: block;
+  height: 1.55em;
+}
+
+.wd-codebox-pre {
+  margin: 0 !important;
+  padding: 14px !important;
+  overflow: auto;
+  max-height: var(--wd-codebox-collapsed-height);
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-sizing: border-box;
+
+  scrollbar-width: thin;
+  scrollbar-color: var(--wd-scrollbar-thumb) var(--wd-scrollbar-track);
+  scrollbar-gutter: stable;
+}
+
+.wd-codebox-pre::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+  background: var(--wd-scrollbar-track);
+}
+
+.wd-codebox-pre::-webkit-scrollbar-track {
+  background: var(--wd-scrollbar-track);
+}
+
+.wd-codebox-pre::-webkit-scrollbar-thumb {
+  border: 2px solid var(--wd-bg);
+  border-radius: 999px;
+  background: var(--wd-scrollbar-thumb);
+}
+
+.wd-codebox-pre::-webkit-scrollbar-thumb:hover {
+  background: var(--wd-scrollbar-thumb-hover);
+}
+
+.wd-codebox-pre::-webkit-scrollbar-corner {
+  background: var(--wd-scrollbar-corner);
+}
+
+.wd-codebox[data-expanded="true"] .wd-codebox-lines,
+.wd-codebox[data-expanded="true"] .wd-codebox-pre {
+  max-height: var(--wd-codebox-expanded-height);
+}
+
+.wd-codebox[data-wrap="true"] .wd-codebox-pre {
+  overflow-x: hidden;
+}
+
+.wd-codebox-pre > code {
+  font-family: inherit;
+  font-size: inherit;
+  line-height: 1.55;
+  white-space: pre;
+}
+
+.wd-codebox[data-wrap="true"] .wd-codebox-pre > code {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+
+.wd-codebox .wd-codebox-pre,
+.wd-codebox .wd-codebox-pre > code {
+  color: var(--wd-text) !important;
+  text-shadow: none !important;
+}
+
+.wd-codebox .wd-codebox-pre *,
+.wd-codebox .wd-codebox-pre > code * {
+  text-shadow: none !important;
+}
+
+#wd-source {
+  display: none !important;
+}
+
+.wd-codebox-toast {
+  position: absolute;
+  top: 54px;
+  right: 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 10px;
+  border: 1px solid var(--wd-border);
+  border-radius: 8px;
+  background: var(--wd-panel);
+  color: var(--wd-text);
+  font-family: sans-serif;
+  font-size: 12px;
+  opacity: 0;
+  transform: translateY(-6px);
+  pointer-events: none;
+  transition: opacity 160ms ease, transform 160ms ease;
+  z-index: 10;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+}
+
+.wd-codebox-toast.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.wd-codebox-toast[data-type="success"] .wd-codebox-toast-icon {
+  color: var(--wd-success);
+}
+
+.wd-codebox-toast[data-type="error"] .wd-codebox-toast-icon {
+  color: var(--wd-error);
+}
+
+/* Wikidot custom tokens */
+.token.wd-block,
+.token.wd-block-name,
+.token.wd-module-keyword,
+.token.wd-tab-keyword {
+  color: var(--wd-token-block);
+}
+
+.token.wd-close,
+.token.closing-block.wd-close,
+.token.closing-block .tag,
+.token.wd-close .wd-block-name,
+.token.wd-code-close,
+.token.wd-html-close,
+.token.wd-code-close .wd-block-name,
+.token.wd-html-close .wd-block-name {
+  color: var(--wd-token-close);
+}
+
+.token.wd-module-name {
+  color: var(--wd-token-module-name);
+}
+
+.token.wd-tab-title {
+  color: var(--wd-token-tab-title);
+}
+
+.token.wd-param,
+.token.wd-param-name,
+.token.wd-attribute {
+  color: var(--wd-token-param);
+}
+
+.token.wd-param-value {
+  color: var(--wd-token-value);
+}
+
+.token.wd-variable,
+.token.wd-variable-name {
+  color: var(--wd-token-variable-name);
+}
+
+.token.wd-variable .token.punctuation,
+.token.wd-variable-mark {
+  color: var(--wd-token-variable-mark);
+}
+
+.token.operator,
+.token.wd-operator {
+  color: var(--wd-token-punctuation);
+}
+
+.token.wd-link,
+.token.wd-link-page,
+.token.wd-link-target,
+.token.wd-link-url {
+  color: var(--wd-token-link-url);
+}
+
+.token.wd-link-label {
+  color: var(--wd-token-link-label);
+}
+
+.token.wd-link-separator {
+  color: var(--wd-token-punctuation);
+}
+
+.token.wd-format {
+  color: var(--wd-token-format);
+}
+
+.token.wd-format-marker {
+  color: var(--wd-token-punctuation);
+}
+
+.token.wd-heading,
+.token.wd-heading-text {
+  color: var(--wd-token-heading);
+}
+
+.token.wd-heading-marker {
+  color: var(--wd-token-punctuation);
+}
+
+.token.wd-list {
+  color: var(--wd-token-param);
+}
+
+.token.wd-table {
+  color: var(--wd-token-table-cell);
+}
+
+.token.wd-color {
+  color: var(--wd-token-color-text);
+}
+
+.token.wd-color-name {
+  color: var(--wd-token-color-name);
+}
+
+.token.wd-color-text {
+  color: var(--wd-token-color-text);
+}
+
+.token.wd-table-pipe,
+.token.wd-table-header-marker {
+  color: var(--wd-token-punctuation);
+}
+
+.token.wd-table-header-text {
+  color: var(--wd-token-table-header);
+}
+
+.token.wd-table-cell-text {
+  color: var(--wd-token-table-cell);
+}
+
+.token.wd-include {
+  color: var(--wd-token-value);
+}
+
+.token.wd-include-keyword {
+  color: var(--wd-token-include-keyword);
+}
+
+.token.wd-include-target {
+  color: var(--wd-token-include-target);
+}
+
+.token.wd-template,
+.token.wd-template-name {
+  color: var(--wd-token-function);
+}
+
+.token.wd-template-arg {
+  color: var(--wd-token-param);
+}
+
+/* Prism default tokens */
+.wd-codebox .token.keyword,
+.wd-codebox .token.tag,
+.wd-codebox .token.selector,
+.wd-codebox .token.boolean,
+.wd-codebox .token.number {
+  color: var(--wd-token-keyword);
+}
+
+.wd-codebox .token.string,
+.wd-codebox .token.attr-value,
+.wd-codebox .token.char {
+  color: var(--wd-token-string);
+}
+
+.wd-codebox .token.function,
+.wd-codebox .token.class-name,
+.wd-codebox .token.attr-name {
+  color: var(--wd-token-function);
+}
+
+.wd-codebox .token.comment {
+  color: var(--wd-token-comment);
+}
+
+.wd-codebox .token.punctuation,
+.wd-codebox .token.operator {
+  color: var(--wd-token-punctuation);
+}
+</style>
+
+<div
+  class="wd-codebox"
+  id="wd-codebox-root"
+  data-title="{$title}"
+  data-lang="{$lang}"
+>
+  <div class="wd-codebox-header">
+    <div>
+      <div class="wd-codebox-title" id="wd-codebox-title">{$title}</div>
+      <div class="wd-codebox-meta">
+        <span id="wd-codebox-lang">{$lang}</span>
+      </div>
+    </div>
+
+    <div class="wd-codebox-actions">
+      <label
+        class="wd-theme-switch"
+        id="wd-theme-toggle"
+        aria-label="Toggle theme"
+        title="Toggle theme"
+      >
+        <input
+          class="wd-theme-switch-input"
+          id="wd-theme-switch-input"
+          type="checkbox"
+          role="switch"
+          aria-label="Toggle light theme"
+        />
+        <span class="wd-theme-switch-track" aria-hidden="true">
+          <span class="wd-theme-switch-icon wd-theme-switch-icon-dark material-symbols-outlined">dark_mode</span>
+          <span class="wd-theme-switch-thumb"></span>
+          <span class="wd-theme-switch-icon wd-theme-switch-icon-light material-symbols-outlined">light_mode</span>
+        </span>
+      </label>
+
+      <button
+        class="wd-codebox-icon-button wd-codebox-expand"
+        id="wd-expand-button"
+        type="button"
+        aria-label="Expand codebox"
+        title="Expand codebox"
+        aria-expanded="false"
+      >
+        <span
+          class="material-symbols-outlined"
+          id="wd-expand-icon"
+          aria-hidden="true"
+        >expand_content</span>
+      </button>
+
+      <button
+        class="wd-codebox-icon-button wd-codebox-wrap"
+        id="wd-wrap-button"
+        type="button"
+        aria-label="Wrap long lines"
+        title="Wrap long lines"
+        aria-pressed="false"
+      >
+        <span
+          class="material-symbols-outlined"
+          id="wd-wrap-icon"
+          aria-hidden="true"
+        >wrap_text</span>
+      </button>
+
+      <button
+        class="wd-codebox-icon-button wd-codebox-copy"
+        id="wd-copy-button"
+        type="button"
+        aria-label="Copy code"
+        title="Copy code"
+      >
+        <span
+          class="material-symbols-outlined"
+          aria-hidden="true"
+        >content_copy</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="wd-codebox-body">
+    <div class="wd-codebox-lines" id="wd-codebox-lines"></div>
+    <pre class="wd-codebox-pre"><code id="wd-code-output">Loading...</code></pre>
+  </div>
+
+  <div class="wd-codebox-toast" id="wd-codebox-toast" aria-live="polite">
+    <span
+      class="material-symbols-outlined wd-codebox-toast-icon"
+      id="wd-codebox-toast-icon"
+      aria-hidden="true"
+    >check_circle</span>
+    <span class="wd-codebox-toast-text" id="wd-codebox-toast-text">Copied</span>
+  </div>
+</div>
+
+<textarea id="wd-source" style="display:none">

@@ -1,0 +1,54 @@
+++ Wikidot Codebox Example
+
+[[include snippet:codebox
+|title=Wikidot Syntax Example
+|lang=wikidot
+]]
+
++ Heading Level 1
+++ Heading Level 2
++++ Heading Level 3
+
+This is **bold**, //italic//, __underline__, and --deleted-- text.
+
+&#91;&#91;module CSS&#93;&#93;
+.example-box {
+  padding: 1rem;
+  border: 1px solid #999;
+  border-radius: 8px;
+  background: #f6f8fa;
+}
+&#91;&#91;/module&#93;&#93;
+
+&#91;&#91;include snippet:codebox
+|title=Nested Example
+|lang=css
+&#93;&#93;
+
+.card {
+  display: grid;
+  gap: 1rem;
+}
+
+&#91;&#91;include snippet:codebox-end&#93;&#93;
+
+&#91;&#91;tab First Tab&#93;&#93;
+Content in the first tab.
+&#91;&#91;/tab&#93;&#93;
+
+&#91;&#91;tab Second Tab&#93;&#93;
+Content in the second tab.
+&#91;&#91;/tab&#93;&#93;
+
+||~ Header 1 ||~ Header 2 ||
+|| Cell 1 || Cell 2 ||
+|| Cell 3 || Cell 4 ||
+
+[[[home | Internal Link]]]
+[https://example.com External Link]
+
+##blue|Colored text##
+
+&#91;!-- This is a Wikidot comment --&#93;
+
+[[include snippet:codebox-end]]

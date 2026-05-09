@@ -1,0 +1,1338 @@
+[[html]]
+<style>
+@import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0..1,0");
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: transparent;
+}
+
+body {
+  color: #c9d1d9;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.material-symbols-outlined {
+  font-family: "Material Symbols Outlined";
+  font-weight: normal;
+  font-style: normal;
+  font-size: 20px;
+  line-height: 1;
+  display: inline-block;
+  text-transform: none;
+  letter-spacing: normal;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-feature-settings: "liga";
+  -webkit-font-smoothing: antialiased;
+  font-variation-settings:
+    "FILL" 0,
+    "wght" 400,
+    "GRAD" 0,
+    "opsz" 24;
+}
+
+.wd-decoder {
+  --wd-bg: #0d1117;
+  --wd-panel: #161b22;
+  --wd-panel-2: #0f1520;
+  --wd-border: #30363d;
+  --wd-text: #c9d1d9;
+  --wd-title: #f0f6fc;
+  --wd-muted: #8b949e;
+  --wd-button: #21262d;
+  --wd-button-hover: #30363d;
+  --wd-accent: #79c0ff;
+  --wd-success: #3fb950;
+  --wd-error: #ff7b72;
+  --wd-token-format: #d2a8ff;
+
+  border: 1px solid var(--wd-border);
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--wd-bg);
+  color: var(--wd-text);
+}
+
+.wd-decoder[data-theme="light"] {
+  --wd-bg: #ffffff;
+  --wd-panel: #f6f8fa;
+  --wd-panel-2: #ffffff;
+  --wd-border: #d0d7de;
+  --wd-text: #333333;
+  --wd-title: #333333;
+  --wd-muted: #57606a;
+  --wd-button: #f6f8fa;
+  --wd-button-hover: #eaeef2;
+  --wd-accent: #0969da;
+  --wd-success: #1a7f37;
+  --wd-error: #cf222e;
+  --wd-token-format: #8250df;
+}
+
+.wd-decoder-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--wd-border);
+  background: var(--wd-panel);
+}
+
+.wd-decoder-title {
+  margin: 0;
+  color: var(--wd-title);
+  font-family: sans-serif;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.wd-decoder-subtitle {
+  margin-top: 2px;
+  color: var(--wd-muted);
+  font-family: sans-serif;
+  font-size: 11px;
+}
+
+.wd-decoder-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.wd-ui-lang-select {
+  width: auto;
+  min-width: 132px;
+  height: 30px;
+  padding: 0 8px;
+  border: 1px solid var(--wd-border);
+  border-radius: 8px;
+  background: var(--wd-button);
+  color: var(--wd-text);
+  font-family: sans-serif;
+  font-size: 12px;
+}
+
+.wd-decoder-body {
+  display: grid;
+  gap: 14px;
+  padding: 14px;
+}
+
+.wd-decoder-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.42fr) minmax(0, 0.58fr);
+  gap: 14px;
+}
+
+.wd-decoder-card {
+  border: 1px solid var(--wd-border);
+  border-radius: 10px;
+  background: var(--wd-panel-2);
+  overflow: hidden;
+}
+
+.wd-decoder-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--wd-border);
+  background: var(--wd-panel);
+}
+
+.wd-decoder-card-title {
+  color: var(--wd-title);
+  font-family: sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.wd-decoder-card-meta {
+  color: var(--wd-muted);
+  font-family: sans-serif;
+  font-size: 11px;
+}
+
+.wd-decoder-controls {
+  display: grid;
+  gap: 10px;
+  padding: 12px;
+}
+
+.wd-field {
+  display: grid;
+  gap: 6px;
+}
+
+.wd-label {
+  color: var(--wd-muted);
+  font-family: sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.wd-select,
+.wd-textarea {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid var(--wd-border);
+  border-radius: 8px;
+  background: var(--wd-bg);
+  color: var(--wd-text);
+  font-family: inherit;
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.wd-select {
+  height: 34px;
+  padding: 0 10px;
+}
+
+.wd-textarea {
+  min-height: 92px;
+  padding: 10px;
+  resize: vertical;
+}
+
+.wd-textarea-source {
+  min-height: 380px;
+}
+
+.wd-textarea-output {
+  min-height: 500px;
+}
+
+.wd-select:focus,
+.wd-textarea:focus,
+.wd-ui-lang-select:focus {
+  outline: 2px solid var(--wd-accent);
+  outline-offset: 1px;
+}
+
+.wd-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.wd-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 32px;
+  padding: 0 10px;
+  border: 1px solid var(--wd-border);
+  border-radius: 8px;
+  background: var(--wd-button);
+  color: var(--wd-text);
+  font-family: sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.wd-button:hover {
+  background: var(--wd-button-hover);
+}
+
+.wd-button-primary {
+  border-color: color-mix(in srgb, var(--wd-accent), var(--wd-border) 35%);
+  color: var(--wd-accent);
+}
+
+.wd-button-success {
+  color: var(--wd-success);
+}
+
+.wd-button-danger {
+  color: var(--wd-error);
+}
+
+.wd-button .material-symbols-outlined {
+  font-size: 17px;
+}
+
+.wd-note {
+  padding: 10px 12px;
+  border: 1px solid var(--wd-border);
+  border-radius: 8px;
+  background: var(--wd-panel);
+  color: var(--wd-muted);
+  font-family: sans-serif;
+  font-size: 12px;
+}
+
+.wd-note strong {
+  color: var(--wd-title);
+}
+
+.wd-token-chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.wd-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 7px;
+  border: 1px solid var(--wd-border);
+  border-radius: 999px;
+  background: var(--wd-bg);
+  color: var(--wd-muted);
+  font-family: sans-serif;
+  font-size: 11px;
+}
+
+.wd-chip-accent {
+  color: var(--wd-accent);
+}
+
+.wd-chip-format {
+  color: var(--wd-token-format);
+}
+
+.wd-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  color: var(--wd-muted);
+  font-family: sans-serif;
+  font-size: 11px;
+}
+
+.wd-stat strong {
+  color: var(--wd-title);
+}
+
+.wd-error-message {
+  display: none;
+  padding: 8px 10px;
+  border: 1px solid color-mix(in srgb, var(--wd-error), var(--wd-border) 45%);
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--wd-error), transparent 88%);
+  color: var(--wd-error);
+  font-family: sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.wd-error-message.is-visible {
+  display: block;
+}
+
+.wd-theme-switch {
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+}
+
+.wd-theme-switch-input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.wd-theme-switch-track {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 58px;
+  height: 28px;
+  padding: 0 6px;
+  border: 1px solid var(--wd-border);
+  border-radius: 999px;
+  background: var(--wd-button);
+  color: var(--wd-muted);
+  box-sizing: border-box;
+}
+
+.wd-theme-switch:hover .wd-theme-switch-track {
+  background: var(--wd-button-hover);
+}
+
+.wd-theme-switch-thumb {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 20px;
+  height: 20px;
+  border-radius: 999px;
+  background: var(--wd-text);
+  transition: transform 160ms ease, background 160ms ease;
+  z-index: 2;
+}
+
+.wd-theme-switch-icon {
+  position: relative;
+  z-index: 1;
+  font-size: 16px;
+  line-height: 1;
+}
+
+.wd-theme-switch-input:checked + .wd-theme-switch-track .wd-theme-switch-thumb {
+  transform: translateX(30px);
+}
+
+.wd-theme-switch-input:checked + .wd-theme-switch-track {
+  color: var(--wd-accent);
+}
+
+.wd-toast {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  max-width: min(420px, calc(100vw - 32px));
+  padding: 9px 12px;
+  border: 1px solid var(--wd-border);
+  border-radius: 9px;
+  background: var(--wd-panel);
+  color: var(--wd-text);
+  font-family: sans-serif;
+  font-size: 12px;
+  opacity: 0;
+  transform: translateY(8px);
+  pointer-events: none;
+  transition: opacity 160ms ease, transform 160ms ease;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.28);
+}
+
+.wd-toast.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.wd-toast[data-type="success"] .wd-toast-icon {
+  color: var(--wd-success);
+}
+
+.wd-toast[data-type="error"] .wd-toast-icon {
+  color: var(--wd-error);
+}
+
+@media (max-width: 900px) {
+  .wd-decoder-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .wd-decoder-header-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .wd-decoder-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .wd-textarea-source,
+  .wd-textarea-output {
+    min-height: 320px;
+  }
+}
+</style>
+
+<div class="wd-decoder" id="wd-decoder-root" data-theme="dark">
+  <div class="wd-decoder-header">
+    <div>
+      <h2 class="wd-decoder-title" data-i18n="appTitle">Codebox Safe Encoder / Decoder</h2>
+      <div class="wd-decoder-subtitle" data-i18n="appSubtitle">
+        Generate stable snippet:codebox payloads with lang-based syntax highlighting.
+      </div>
+    </div>
+
+    <div class="wd-decoder-header-actions">
+      <select class="wd-ui-lang-select" id="wd-ui-lang-select" aria-label="UI language">
+        <option value="en">English</option>
+        <option value="ko">한국어</option>
+        <option value="ja">日本語</option>
+        <option value="fr">Français</option>
+        <option value="de">Deutsch</option>
+        <option value="zh">中文</option>
+        <option value="es">Español</option>
+      </select>
+
+      <label class="wd-theme-switch" id="wd-theme-toggle" aria-label="Toggle theme" title="Toggle theme">
+        <input
+          class="wd-theme-switch-input"
+          id="wd-theme-switch-input"
+          type="checkbox"
+          role="switch"
+          aria-label="Toggle light theme"
+        />
+        <span class="wd-theme-switch-track" aria-hidden="true">
+          <span class="wd-theme-switch-icon material-symbols-outlined">dark_mode</span>
+          <span class="wd-theme-switch-thumb"></span>
+          <span class="wd-theme-switch-icon material-symbols-outlined">light_mode</span>
+        </span>
+      </label>
+    </div>
+  </div>
+
+  <div class="wd-decoder-body">
+    <div class="wd-note" data-i18n-html="note">
+      <strong>Default:</strong> Plain Text.
+      For <strong>lang=wikidot</strong>, square brackets are encoded.
+      For all languages, HTML wrapper-sensitive characters are encoded.
+    </div>
+
+    <div class="wd-decoder-grid">
+      <section class="wd-decoder-card">
+        <div class="wd-decoder-card-header">
+          <div class="wd-decoder-card-title" data-i18n="inputTitle">Input</div>
+          <div class="wd-decoder-card-meta" data-i18n="inputMeta">raw source</div>
+        </div>
+
+        <div class="wd-decoder-controls">
+          <div class="wd-field">
+            <label class="wd-label" for="wd-title-input" data-i18n="includeTitle">Include Title</label>
+            <textarea class="wd-textarea" id="wd-title-input" placeholder="Code"></textarea>
+          </div>
+
+          <div class="wd-field">
+            <label class="wd-label" for="wd-lang-select" data-i18n="language">Language</label>
+            <select class="wd-select" id="wd-lang-select">
+              <option value="plaintext" selected>Plain Text</option>
+              <option value="wikidot">Wikidot</option>
+              <option value="html">HTML</option>
+              <option value="css">CSS</option>
+              <option value="javascript">JavaScript</option>
+              <option value="typescript">TypeScript</option>
+              <option value="python">Python</option>
+              <option value="bash">Bash</option>
+              <option value="yaml">YAML</option>
+              <option value="json">JSON</option>
+              <option value="markup">Markup</option>
+            </select>
+          </div>
+
+          <div class="wd-field">
+            <label class="wd-label" for="wd-source-input" data-i18n="sourceCode">Source Code</label>
+            <textarea
+              class="wd-textarea wd-textarea-source"
+              id="wd-source-input"
+              spellcheck="false"
+              placeholder="Paste raw code here."
+              data-i18n-placeholder="sourcePlaceholder"
+            ></textarea>
+          </div>
+
+          <div class="wd-error-message" id="wd-error-message" data-i18n="emptyError">
+            Source Code is empty. Paste code before generating output.
+          </div>
+
+          <div class="wd-actions">
+            <button class="wd-button wd-button-primary" id="wd-generate-button" type="button">
+              <span class="material-symbols-outlined" aria-hidden="true">bolt</span>
+              <span data-i18n="generate">Generate</span>
+            </button>
+
+            <button class="wd-button" id="wd-decode-input-button" type="button">
+              <span class="material-symbols-outlined" aria-hidden="true">data_object</span>
+              <span data-i18n="decodeEntities">Decode entities</span>
+            </button>
+
+            <button class="wd-button wd-button-danger" id="wd-clear-button" type="button">
+              <span class="material-symbols-outlined" aria-hidden="true">delete</span>
+              <span data-i18n="clear">Clear</span>
+            </button>
+          </div>
+
+          <div class="wd-token-chip-row">
+            <span class="wd-chip wd-chip-accent">&amp; → &amp;amp;</span>
+            <span class="wd-chip wd-chip-accent">&lt; → &amp;lt;</span>
+            <span class="wd-chip wd-chip-accent">&gt; → &amp;gt;</span>
+            <span class="wd-chip wd-chip-format">wikidot: [ ] → &amp;#91; &amp;#93;</span>
+          </div>
+
+          <div class="wd-stats">
+            <span class="wd-stat"><span data-i18n="inputLines">Input lines</span>: <strong id="wd-input-lines">0</strong></span>
+            <span class="wd-stat"><span data-i18n="inputChars">Input chars</span>: <strong id="wd-input-chars">0</strong></span>
+          </div>
+        </div>
+      </section>
+
+      <section class="wd-decoder-card">
+        <div class="wd-decoder-card-header">
+          <div class="wd-decoder-card-title" data-i18n="outputTitle">Output</div>
+          <div class="wd-decoder-card-meta" data-i18n="outputMeta">copy into Wikidot page</div>
+        </div>
+
+        <div class="wd-decoder-controls">
+          <div class="wd-field">
+            <label class="wd-label" for="wd-output" data-i18n="generatedInclude">Generated Wikidot Include</label>
+            <textarea
+              class="wd-textarea wd-textarea-output"
+              id="wd-output"
+              spellcheck="false"
+              readonly
+              placeholder="Generated output appears here."
+              data-i18n-placeholder="outputPlaceholder"
+            ></textarea>
+          </div>
+
+          <div class="wd-actions">
+            <button class="wd-button wd-button-success" id="wd-copy-output-button" type="button">
+              <span class="material-symbols-outlined" aria-hidden="true">content_copy</span>
+              <span data-i18n="copyOutput">Copy output</span>
+            </button>
+
+            <button class="wd-button" id="wd-copy-body-button" type="button">
+              <span class="material-symbols-outlined" aria-hidden="true">subject</span>
+              <span data-i18n="copyBody">Copy encoded body</span>
+            </button>
+          </div>
+
+          <div class="wd-stats">
+            <span class="wd-stat"><span data-i18n="outputLines">Output lines</span>: <strong id="wd-output-lines">0</strong></span>
+            <span class="wd-stat"><span data-i18n="outputChars">Output chars</span>: <strong id="wd-output-chars">0</strong></span>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <div class="wd-toast" id="wd-toast" data-type="success" aria-live="polite">
+    <span class="material-symbols-outlined wd-toast-icon" id="wd-toast-icon" aria-hidden="true">check_circle</span>
+    <span id="wd-toast-text">Copied</span>
+  </div>
+</div>
+
+<script>
+(function () {
+  const root = document.getElementById("wd-decoder-root");
+  const themeSwitchInput = document.getElementById("wd-theme-switch-input");
+  const uiLangSelect = document.getElementById("wd-ui-lang-select");
+
+  const titleInput = document.getElementById("wd-title-input");
+  const langSelect = document.getElementById("wd-lang-select");
+  const sourceInput = document.getElementById("wd-source-input");
+  const output = document.getElementById("wd-output");
+  const errorMessage = document.getElementById("wd-error-message");
+
+  const generateButton = document.getElementById("wd-generate-button");
+  const decodeInputButton = document.getElementById("wd-decode-input-button");
+  const clearButton = document.getElementById("wd-clear-button");
+  const copyOutputButton = document.getElementById("wd-copy-output-button");
+  const copyBodyButton = document.getElementById("wd-copy-body-button");
+
+  const inputLines = document.getElementById("wd-input-lines");
+  const inputChars = document.getElementById("wd-input-chars");
+  const outputLines = document.getElementById("wd-output-lines");
+  const outputChars = document.getElementById("wd-output-chars");
+
+  const toast = document.getElementById("wd-toast");
+  const toastIcon = document.getElementById("wd-toast-icon");
+  const toastText = document.getElementById("wd-toast-text");
+
+  let toastTimer = null;
+  let lastEncodedBody = "";
+  let currentUiLang = "en";
+
+  const translations = {
+    en: {
+      appTitle: "Codebox Safe Encoder / Decoder",
+      appSubtitle: "Generate stable snippet:codebox payloads with lang-based syntax highlighting.",
+      note: "<strong>Default:</strong> Plain Text. For <strong>lang=wikidot</strong>, square brackets are encoded. For all languages, HTML wrapper-sensitive characters are encoded.",
+      inputTitle: "Input",
+      inputMeta: "raw source",
+      includeTitle: "Include Title",
+      language: "Language",
+      sourceCode: "Source Code",
+      sourcePlaceholder: "Paste raw code here.",
+      emptyError: "Source Code is empty. Paste code before generating output.",
+      generate: "Generate",
+      decodeEntities: "Decode entities",
+      clear: "Clear",
+      inputLines: "Input lines",
+      inputChars: "Input chars",
+      outputTitle: "Output",
+      outputMeta: "copy into Wikidot page",
+      generatedInclude: "Generated Wikidot Include",
+      outputPlaceholder: "Generated output appears here.",
+      copyOutput: "Copy output",
+      copyBody: "Copy encoded body",
+      outputLines: "Output lines",
+      outputChars: "Output chars",
+      toastGenerated: "Output generated",
+      toastEmpty: "Source Code is empty",
+      toastDecoded: "Input entities decoded",
+      toastCleared: "Cleared",
+      toastNothing: "Nothing to copy",
+      toastOutputCopied: "Output copied",
+      toastBodyCopied: "Encoded body copied",
+      toastCopyFailed: "Copy failed"
+    },
+    ko: {
+      appTitle: "Codebox 안전 인코더 / 디코더",
+      appSubtitle: "lang 기반 syntax highlighting용 stable snippet:codebox payload를 생성합니다.",
+      note: "<strong>기본값:</strong> Plain Text. <strong>lang=wikidot</strong>일 때 대괄호를 인코딩합니다. 모든 언어에서 HTML wrapper에 민감한 문자를 인코딩합니다.",
+      inputTitle: "입력",
+      inputMeta: "원본 소스",
+      includeTitle: "Include 제목",
+      language: "언어",
+      sourceCode: "소스 코드",
+      sourcePlaceholder: "원본 코드를 붙여넣으세요.",
+      emptyError: "Source Code가 비어 있습니다. 출력 생성 전에 코드를 붙여넣으세요.",
+      generate: "생성",
+      decodeEntities: "엔티티 디코딩",
+      clear: "지우기",
+      inputLines: "입력 줄 수",
+      inputChars: "입력 문자 수",
+      outputTitle: "출력",
+      outputMeta: "Wikidot 페이지에 복사",
+      generatedInclude: "생성된 Wikidot Include",
+      outputPlaceholder: "생성된 출력이 여기에 표시됩니다.",
+      copyOutput: "출력 복사",
+      copyBody: "인코딩 본문 복사",
+      outputLines: "출력 줄 수",
+      outputChars: "출력 문자 수",
+      toastGenerated: "출력이 생성되었습니다",
+      toastEmpty: "Source Code가 비어 있습니다",
+      toastDecoded: "입력 엔티티를 디코딩했습니다",
+      toastCleared: "지웠습니다",
+      toastNothing: "복사할 내용이 없습니다",
+      toastOutputCopied: "출력을 복사했습니다",
+      toastBodyCopied: "인코딩 본문을 복사했습니다",
+      toastCopyFailed: "복사 실패"
+    },
+    ja: {
+      appTitle: "Codebox 安全エンコーダー / デコーダー",
+      appSubtitle: "lang ベースの syntax highlighting 用 stable snippet:codebox payload を生成します。",
+      note: "<strong>既定:</strong> Plain Text。<strong>lang=wikidot</strong> の場合は角括弧をエンコードします。すべての言語で HTML wrapper に影響する文字をエンコードします。",
+      inputTitle: "入力",
+      inputMeta: "元ソース",
+      includeTitle: "Include タイトル",
+      language: "言語",
+      sourceCode: "ソースコード",
+      sourcePlaceholder: "元コードを貼り付けてください。",
+      emptyError: "Source Code が空です。出力を生成する前にコードを貼り付けてください。",
+      generate: "生成",
+      decodeEntities: "エンティティをデコード",
+      clear: "クリア",
+      inputLines: "入力行数",
+      inputChars: "入力文字数",
+      outputTitle: "出力",
+      outputMeta: "Wikidot ページにコピー",
+      generatedInclude: "生成された Wikidot Include",
+      outputPlaceholder: "生成された出力がここに表示されます。",
+      copyOutput: "出力をコピー",
+      copyBody: "エンコード本文をコピー",
+      outputLines: "出力行数",
+      outputChars: "出力文字数",
+      toastGenerated: "出力を生成しました",
+      toastEmpty: "Source Code が空です",
+      toastDecoded: "入力エンティティをデコードしました",
+      toastCleared: "クリアしました",
+      toastNothing: "コピーする内容がありません",
+      toastOutputCopied: "出力をコピーしました",
+      toastBodyCopied: "エンコード本文をコピーしました",
+      toastCopyFailed: "コピーに失敗しました"
+    },
+    fr: {
+      appTitle: "Encodeur / Décodeur sécurisé Codebox",
+      appSubtitle: "Génère des payloads stable snippet:codebox avec coloration basée sur lang.",
+      note: "<strong>Par défaut :</strong> Plain Text. Pour <strong>lang=wikidot</strong>, les crochets sont encodés. Pour toutes les langues, les caractères sensibles au wrapper HTML sont encodés.",
+      inputTitle: "Entrée",
+      inputMeta: "source brute",
+      includeTitle: "Titre Include",
+      language: "Langue",
+      sourceCode: "Code source",
+      sourcePlaceholder: "Collez le code brut ici.",
+      emptyError: "Source Code est vide. Collez du code avant de générer la sortie.",
+      generate: "Générer",
+      decodeEntities: "Décoder les entités",
+      clear: "Effacer",
+      inputLines: "Lignes en entrée",
+      inputChars: "Caractères en entrée",
+      outputTitle: "Sortie",
+      outputMeta: "copier dans une page Wikidot",
+      generatedInclude: "Include Wikidot généré",
+      outputPlaceholder: "La sortie générée apparaît ici.",
+      copyOutput: "Copier la sortie",
+      copyBody: "Copier le corps encodé",
+      outputLines: "Lignes en sortie",
+      outputChars: "Caractères en sortie",
+      toastGenerated: "Sortie générée",
+      toastEmpty: "Source Code est vide",
+      toastDecoded: "Entités d’entrée décodées",
+      toastCleared: "Effacé",
+      toastNothing: "Rien à copier",
+      toastOutputCopied: "Sortie copiée",
+      toastBodyCopied: "Corps encodé copié",
+      toastCopyFailed: "Échec de la copie"
+    },
+    de: {
+      appTitle: "Codebox sicherer Encoder / Decoder",
+      appSubtitle: "Erzeugt stabile snippet:codebox-Payloads mit lang-basierter Syntaxhervorhebung.",
+      note: "<strong>Standard:</strong> Plain Text. Bei <strong>lang=wikidot</strong> werden eckige Klammern kodiert. Für alle Sprachen werden HTML-wrapper-sensitive Zeichen kodiert.",
+      inputTitle: "Eingabe",
+      inputMeta: "Rohquelle",
+      includeTitle: "Include-Titel",
+      language: "Sprache",
+      sourceCode: "Quellcode",
+      sourcePlaceholder: "Rohcode hier einfügen.",
+      emptyError: "Source Code ist leer. Füge Code ein, bevor du die Ausgabe erzeugst.",
+      generate: "Erzeugen",
+      decodeEntities: "Entitäten dekodieren",
+      clear: "Löschen",
+      inputLines: "Eingabezeilen",
+      inputChars: "Eingabezeichen",
+      outputTitle: "Ausgabe",
+      outputMeta: "in Wikidot-Seite kopieren",
+      generatedInclude: "Erzeugtes Wikidot Include",
+      outputPlaceholder: "Die erzeugte Ausgabe erscheint hier.",
+      copyOutput: "Ausgabe kopieren",
+      copyBody: "Kodierten Inhalt kopieren",
+      outputLines: "Ausgabezeilen",
+      outputChars: "Ausgabezeichen",
+      toastGenerated: "Ausgabe erzeugt",
+      toastEmpty: "Source Code ist leer",
+      toastDecoded: "Eingabe-Entitäten dekodiert",
+      toastCleared: "Gelöscht",
+      toastNothing: "Nichts zu kopieren",
+      toastOutputCopied: "Ausgabe kopiert",
+      toastBodyCopied: "Kodierter Inhalt kopiert",
+      toastCopyFailed: "Kopieren fehlgeschlagen"
+    },
+    zh: {
+      appTitle: "Codebox 安全编码 / 解码器",
+      appSubtitle: "生成基于 lang 的 stable snippet:codebox payload。",
+      note: "<strong>默认:</strong> Plain Text。<strong>lang=wikidot</strong> 时会编码方括号。所有语言都会编码对 HTML wrapper 敏感的字符。",
+      inputTitle: "输入",
+      inputMeta: "原始源码",
+      includeTitle: "Include 标题",
+      language: "语言",
+      sourceCode: "源代码",
+      sourcePlaceholder: "在此粘贴原始代码。",
+      emptyError: "Source Code 为空。请先粘贴代码再生成输出。",
+      generate: "生成",
+      decodeEntities: "解码实体",
+      clear: "清除",
+      inputLines: "输入行数",
+      inputChars: "输入字符数",
+      outputTitle: "输出",
+      outputMeta: "复制到 Wikidot 页面",
+      generatedInclude: "生成的 Wikidot Include",
+      outputPlaceholder: "生成的输出会显示在这里。",
+      copyOutput: "复制输出",
+      copyBody: "复制编码正文",
+      outputLines: "输出行数",
+      outputChars: "输出字符数",
+      toastGenerated: "已生成输出",
+      toastEmpty: "Source Code 为空",
+      toastDecoded: "已解码输入实体",
+      toastCleared: "已清除",
+      toastNothing: "没有可复制的内容",
+      toastOutputCopied: "已复制输出",
+      toastBodyCopied: "已复制编码正文",
+      toastCopyFailed: "复制失败"
+    },
+    es: {
+      appTitle: "Codificador / Decodificador seguro de Codebox",
+      appSubtitle: "Genera payloads stable snippet:codebox con resaltado basado en lang.",
+      note: "<strong>Predeterminado:</strong> Plain Text. Para <strong>lang=wikidot</strong>, se codifican los corchetes. Para todos los lenguajes, se codifican caracteres sensibles al wrapper HTML.",
+      inputTitle: "Entrada",
+      inputMeta: "fuente sin procesar",
+      includeTitle: "Título Include",
+      language: "Lenguaje",
+      sourceCode: "Código fuente",
+      sourcePlaceholder: "Pega el código sin procesar aquí.",
+      emptyError: "Source Code está vacío. Pega código antes de generar la salida.",
+      generate: "Generar",
+      decodeEntities: "Decodificar entidades",
+      clear: "Limpiar",
+      inputLines: "Líneas de entrada",
+      inputChars: "Caracteres de entrada",
+      outputTitle: "Salida",
+      outputMeta: "copiar en una página Wikidot",
+      generatedInclude: "Include Wikidot generado",
+      outputPlaceholder: "La salida generada aparecerá aquí.",
+      copyOutput: "Copiar salida",
+      copyBody: "Copiar cuerpo codificado",
+      outputLines: "Líneas de salida",
+      outputChars: "Caracteres de salida",
+      toastGenerated: "Salida generada",
+      toastEmpty: "Source Code está vacío",
+      toastDecoded: "Entidades de entrada decodificadas",
+      toastCleared: "Limpiado",
+      toastNothing: "Nada que copiar",
+      toastOutputCopied: "Salida copiada",
+      toastBodyCopied: "Cuerpo codificado copiado",
+      toastCopyFailed: "Error al copiar"
+    }
+  };
+
+  function t(key) {
+    return (translations[currentUiLang] && translations[currentUiLang][key]) ||
+      translations.en[key] ||
+      key;
+  }
+
+  function detectUiLang() {
+    let saved = null;
+
+    try {
+      saved = localStorage.getItem("wd-codebox-decoder-ui-lang");
+    } catch (error) {}
+
+    if (saved && translations[saved]) {
+      return saved;
+    }
+
+    const nav = String(navigator.language || "en").toLowerCase();
+
+    if (nav.indexOf("ko") === 0) return "ko";
+    if (nav.indexOf("ja") === 0) return "ja";
+    if (nav.indexOf("fr") === 0) return "fr";
+    if (nav.indexOf("de") === 0) return "de";
+    if (nav.indexOf("zh") === 0) return "zh";
+    if (nav.indexOf("es") === 0) return "es";
+
+    return "en";
+  }
+
+  function applyUiLang(lang) {
+    const next = translations[lang] ? lang : "en";
+    currentUiLang = next;
+
+    if (uiLangSelect) {
+      uiLangSelect.value = next;
+    }
+
+    document.querySelectorAll("[data-i18n]").forEach(function (el) {
+      el.textContent = t(el.getAttribute("data-i18n"));
+    });
+
+    document.querySelectorAll("[data-i18n-html]").forEach(function (el) {
+      el.innerHTML = t(el.getAttribute("data-i18n-html"));
+    });
+
+    document.querySelectorAll("[data-i18n-placeholder]").forEach(function (el) {
+      el.setAttribute("placeholder", t(el.getAttribute("data-i18n-placeholder")));
+    });
+
+    if (errorMessage.classList.contains("is-visible")) {
+      errorMessage.textContent = t("emptyError");
+    }
+
+    try {
+      localStorage.setItem("wd-codebox-decoder-ui-lang", next);
+    } catch (error) {}
+  }
+
+  function getSavedTheme() {
+    try {
+      return localStorage.getItem("wd-codebox-theme");
+    } catch (error) {
+      return null;
+    }
+  }
+
+  function saveTheme(theme) {
+    try {
+      localStorage.setItem("wd-codebox-theme", theme);
+    } catch (error) {}
+  }
+
+  function createScrollSnapshot() {
+    const active = document.activeElement;
+    const windowScrollX = window.scrollX || window.pageXOffset || 0;
+    const windowScrollY = window.scrollY || window.pageYOffset || 0;
+    const bodyScrollTop = document.body ? document.body.scrollTop : 0;
+    const bodyScrollLeft = document.body ? document.body.scrollLeft : 0;
+    const docScrollTop = document.documentElement ? document.documentElement.scrollTop : 0;
+    const docScrollLeft = document.documentElement ? document.documentElement.scrollLeft : 0;
+
+    return function restoreScroll() {
+      if (document.body) {
+        document.body.scrollTop = bodyScrollTop;
+        document.body.scrollLeft = bodyScrollLeft;
+      }
+
+      if (document.documentElement) {
+        document.documentElement.scrollTop = docScrollTop;
+        document.documentElement.scrollLeft = docScrollLeft;
+      }
+
+      window.scrollTo(windowScrollX, windowScrollY);
+
+      if (active && typeof active.focus === "function") {
+        try {
+          active.focus({ preventScroll: true });
+        } catch (error) {}
+      }
+    };
+  }
+
+  function restoreScrollLater(restoreScroll) {
+    restoreScroll();
+
+    requestAnimationFrame(function () {
+      restoreScroll();
+
+      requestAnimationFrame(function () {
+        restoreScroll();
+      });
+    });
+
+    setTimeout(restoreScroll, 80);
+  }
+
+  function applyTheme(theme, restoreScroll) {
+    const nextTheme = theme === "light" ? "light" : "dark";
+
+    root.setAttribute("data-theme", nextTheme);
+
+    if (themeSwitchInput) {
+      themeSwitchInput.checked = nextTheme === "light";
+      themeSwitchInput.setAttribute(
+        "aria-checked",
+        nextTheme === "light" ? "true" : "false"
+      );
+    }
+
+    if (restoreScroll) {
+      restoreScrollLater(restoreScroll);
+    }
+  }
+
+  function toggleTheme() {
+    const restoreScroll = createScrollSnapshot();
+    const next = themeSwitchInput && themeSwitchInput.checked ? "light" : "dark";
+
+    applyTheme(next, restoreScroll);
+    saveTheme(next);
+  }
+
+  function showToast(type, message) {
+    if (!toast || !toastIcon || !toastText) {
+      return;
+    }
+
+    if (toastTimer) {
+      clearTimeout(toastTimer);
+    }
+
+    toastIcon.textContent = type === "error" ? "error" : "check_circle";
+    toast.setAttribute("data-type", type === "error" ? "error" : "success");
+    toastText.textContent = message;
+    toast.classList.add("is-visible");
+
+    toastTimer = setTimeout(function () {
+      toast.classList.remove("is-visible");
+    }, 2600);
+  }
+
+  function showEmptyError() {
+    errorMessage.textContent = t("emptyError");
+    errorMessage.classList.add("is-visible");
+    showToast("error", t("toastEmpty"));
+  }
+
+  function hideEmptyError() {
+    errorMessage.classList.remove("is-visible");
+  }
+
+  function countLines(text) {
+    const value = String(text || "");
+    return value.length ? value.split(/\r\n|\r|\n/).length : 0;
+  }
+
+  function updateStats() {
+    const sourceText = sourceInput.value || "";
+    const outputText = output.value || "";
+
+    inputLines.textContent = countLines(sourceText);
+    inputChars.textContent = sourceText.length;
+    outputLines.textContent = countLines(outputText);
+    outputChars.textContent = outputText.length;
+  }
+
+  function normalizeLang(value) {
+    const lang = String(value || "plaintext").toLowerCase().trim();
+    return lang || "plaintext";
+  }
+
+  function sanitizeTitle(value) {
+    const title = String(value || "")
+      .replace(/\r?\n/g, " ")
+      .replace(/\|/g, "｜")
+      .replace(/\s+/g, " ")
+      .trim();
+
+    return title || "Code";
+  }
+
+  function encodeBaseEntities(text) {
+    return String(text || "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;");
+  }
+
+  function encodeWikidotBrackets(text) {
+    return String(text || "")
+      .replace(/\[/g, "&#91;")
+      .replace(/\]/g, "&#93;");
+  }
+
+  function encodeForCodebox(text, lang) {
+    const normalizedLang = normalizeLang(lang);
+    let result = encodeBaseEntities(text);
+
+    if (normalizedLang === "wikidot" || normalizedLang === "wd" || normalizedLang === "wiki") {
+      result = encodeWikidotBrackets(result);
+    }
+
+    return result;
+  }
+
+  function decodeEntities(text) {
+    const temp = document.createElement("textarea");
+    temp.innerHTML = String(text || "");
+    return temp.value;
+  }
+
+  function buildInclude(title, lang, encodedBody) {
+    return [
+      "[[include snippet:codebox",
+      "|title=" + title,
+      "|lang=" + lang,
+      "]]",
+      "",
+      encodedBody,
+      "",
+      "[[include snippet:codebox-end]]"
+    ].join("\n");
+  }
+
+  function clearGeneratedOutput() {
+    output.value = "";
+    lastEncodedBody = "";
+    updateStats();
+  }
+
+  function generateOutput(options) {
+    const silent = options && options.silent;
+    const source = sourceInput.value || "";
+
+    if (!source.trim()) {
+      clearGeneratedOutput();
+
+      if (!silent) {
+        showEmptyError();
+      }
+
+      return false;
+    }
+
+    hideEmptyError();
+
+    const title = sanitizeTitle(titleInput.value);
+    const lang = normalizeLang(langSelect.value);
+    const encodedBody = encodeForCodebox(source, lang);
+    const generated = buildInclude(title, lang, encodedBody);
+
+    lastEncodedBody = encodedBody;
+    output.value = generated;
+    updateStats();
+
+    if (!silent) {
+      showToast("success", t("toastGenerated"));
+    }
+
+    return true;
+  }
+
+  function decodeInputEntities() {
+    if (!sourceInput.value.trim()) {
+      showEmptyError();
+      return;
+    }
+
+    sourceInput.value = decodeEntities(sourceInput.value);
+    generateOutput({ silent: true });
+    showToast("success", t("toastDecoded"));
+  }
+
+  function clearAll() {
+    titleInput.value = "";
+    sourceInput.value = "";
+    output.value = "";
+    lastEncodedBody = "";
+    hideEmptyError();
+    updateStats();
+    showToast("success", t("toastCleared"));
+  }
+
+  function copyWithFallback(text) {
+    const temp = document.createElement("textarea");
+
+    temp.value = text;
+    temp.setAttribute("readonly", "readonly");
+    temp.setAttribute("aria-hidden", "true");
+    temp.style.position = "fixed";
+    temp.style.left = "0";
+    temp.style.top = "0";
+    temp.style.width = "1px";
+    temp.style.height = "1px";
+    temp.style.opacity = "0";
+    temp.style.pointerEvents = "none";
+    temp.style.zIndex = "-1";
+
+    document.body.appendChild(temp);
+
+    try {
+      temp.focus({ preventScroll: true });
+    } catch (error) {
+      temp.focus();
+    }
+
+    temp.select();
+    temp.setSelectionRange(0, temp.value.length);
+
+    const result = document.execCommand("copy");
+    document.body.removeChild(temp);
+
+    return result;
+  }
+
+  async function copyText(text, message) {
+    const value = String(text || "");
+    const restoreScroll = createScrollSnapshot();
+
+    if (!value) {
+      restoreScrollLater(restoreScroll);
+      showToast("error", t("toastNothing"));
+      return;
+    }
+
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        await navigator.clipboard.writeText(value);
+      } else {
+        copyWithFallback(value);
+      }
+
+      restoreScrollLater(restoreScroll);
+      showToast("success", message);
+    } catch (error) {
+      restoreScrollLater(restoreScroll);
+      showToast("error", t("toastCopyFailed"));
+    }
+  }
+
+  function copyOutput() {
+    const restoreScroll = createScrollSnapshot();
+
+    if (!output.value) {
+      const generated = generateOutput({ silent: true });
+
+      restoreScrollLater(restoreScroll);
+
+      if (!generated) {
+        showEmptyError();
+        return;
+      }
+    }
+
+    copyText(output.value, t("toastOutputCopied"));
+  }
+
+  function copyEncodedBody() {
+    const restoreScroll = createScrollSnapshot();
+
+    if (!lastEncodedBody) {
+      const generated = generateOutput({ silent: true });
+
+      restoreScrollLater(restoreScroll);
+
+      if (!generated) {
+        showEmptyError();
+        return;
+      }
+    }
+
+    copyText(lastEncodedBody, t("toastBodyCopied"));
+  }
+
+  function initTheme() {
+    const restoreScroll = createScrollSnapshot();
+
+    applyTheme(getSavedTheme() || "dark", restoreScroll);
+
+    if (themeSwitchInput) {
+      themeSwitchInput.addEventListener("change", toggleTheme);
+    }
+  }
+
+  function bindEvents() {
+    [
+      generateButton,
+      decodeInputButton,
+      clearButton,
+      copyOutputButton,
+      copyBodyButton
+    ].forEach(function (button) {
+      button.addEventListener("mousedown", function (event) {
+        event.preventDefault();
+      });
+    });
+
+    uiLangSelect.addEventListener("change", function () {
+      const restoreScroll = createScrollSnapshot();
+      applyUiLang(uiLangSelect.value);
+      restoreScrollLater(restoreScroll);
+    });
+
+    generateButton.addEventListener("click", function () {
+      generateOutput({ silent: false });
+    });
+
+    decodeInputButton.addEventListener("click", decodeInputEntities);
+    clearButton.addEventListener("click", clearAll);
+    copyOutputButton.addEventListener("click", copyOutput);
+    copyBodyButton.addEventListener("click", copyEncodedBody);
+
+    titleInput.addEventListener("input", function () {
+      generateOutput({ silent: true });
+    });
+
+    langSelect.addEventListener("change", function () {
+      generateOutput({ silent: true });
+    });
+
+    sourceInput.addEventListener("input", function () {
+      if (sourceInput.value.trim()) {
+        hideEmptyError();
+        generateOutput({ silent: true });
+      } else {
+        clearGeneratedOutput();
+      }
+    });
+  }
+
+  applyUiLang(detectUiLang());
+  initTheme();
+  bindEvents();
+  updateStats();
+})();
+</script>
+[[/html]]

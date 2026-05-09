@@ -1,0 +1,1084 @@
+</textarea>
+
+<script>
+(function () {
+  const root = document.getElementById("wd-codebox-root");
+  const source = document.getElementById("wd-source");
+  const output = document.getElementById("wd-code-output");
+  const copyButton = document.getElementById("wd-copy-button");
+  const expandButton = document.getElementById("wd-expand-button");
+  const expandIcon = document.getElementById("wd-expand-icon");
+  const wrapButton = document.getElementById("wd-wrap-button");
+  const wrapIcon = document.getElementById("wd-wrap-icon");
+  const themeSwitchInput = document.getElementById("wd-theme-switch-input");
+  const toast = document.getElementById("wd-codebox-toast");
+  const toastIcon = document.getElementById("wd-codebox-toast-icon");
+  const toastText = document.getElementById("wd-codebox-toast-text");
+  const titleEl = document.getElementById("wd-codebox-title");
+  const langEl = document.getElementById("wd-codebox-lang");
+  const lineBox = document.getElementById("wd-codebox-lines");
+  const preEl = document.querySelector(".wd-codebox-pre");
+
+  let toastTimer = null;
+  let lineNumberResizeTimer = null;
+  let lineNumberResizeObserver = null;
+
+  function cleanParam(value, fallback) {
+    if (!value || String(value).indexOf("{$") !== -1) {
+      return fallback;
+    }
+
+    return String(value);
+  }
+
+  const title = cleanParam(root.getAttribute("data-title"), "Code");
+  const langRaw = cleanParam(root.getAttribute("data-lang"), "plaintext");
+
+  titleEl.textContent = title;
+  langEl.textContent = langRaw;
+
+  window.Prism = window.Prism || {};
+  window.Prism.manual = true;
+
+  function getSavedTheme() {
+    try {
+      return localStorage.getItem("wd-codebox-theme");
+    } catch (error) {
+      return null;
+    }
+  }
+
+  function saveTheme(theme) {
+    try {
+      localStorage.setItem("wd-codebox-theme", theme);
+    } catch (error) {}
+  }
+
+  function applyTheme(theme) {
+    const nextTheme = theme === "light" ? "light" : "dark";
+
+    root.setAttribute("data-theme", nextTheme);
+
+    if (themeSwitchInput) {
+      themeSwitchInput.checked = nextTheme === "light";
+      themeSwitchInput.setAttribute(
+        "aria-checked",
+        nextTheme === "light" ? "true" : "false"
+      );
+    }
+  }
+
+  function toggleTheme() {
+    const restoreScroll = createScrollSnapshot();
+    const next = themeSwitchInput && themeSwitchInput.checked ? "light" : "dark";
+
+    applyTheme(next);
+    saveTheme(next);
+    restoreScrollLater(restoreScroll);
+  }
+
+  function initTheme() {
+    const saved = getSavedTheme();
+
+    applyTheme(saved || "dark");
+
+    if (themeSwitchInput) {
+      themeSwitchInput.addEventListener("change", toggleTheme);
+    }
+  }
+
+  function applyExpandedState(isExpanded) {
+    const nextExpanded = Boolean(isExpanded);
+
+    root.setAttribute("data-expanded", nextExpanded ? "true" : "false");
+
+    if (expandButton) {
+      expandButton.setAttribute("aria-expanded", nextExpanded ? "true" : "false");
+      expandButton.setAttribute(
+        "aria-label",
+        nextExpanded ? "Collapse codebox" : "Expand codebox"
+      );
+      expandButton.setAttribute(
+        "title",
+        nextExpanded ? "Collapse codebox" : "Expand codebox"
+      );
+    }
+
+    if (expandIcon) {
+      expandIcon.textContent = nextExpanded ? "collapse_content" : "expand_content";
+    }
+
+    requestAnimationFrame(function () {
+      const code = normalizeSource(source.value);
+
+      updateLineNumbers(code);
+
+      if (lineBox && preEl) {
+        lineBox.scrollTop = preEl.scrollTop;
+      }
+    });
+  }
+
+  function toggleExpandedState() {
+    const restoreScroll = createScrollSnapshot();
+    const current = root.getAttribute("data-expanded") === "true";
+
+    applyExpandedState(!current);
+    restoreScrollLater(restoreScroll);
+
+    requestAnimationFrame(function () {
+      if (lineBox && preEl) {
+        lineBox.scrollTop = preEl.scrollTop;
+      }
+
+      restoreScroll();
+    });
+  }
+
+  function applyWrapState(isWrapped) {
+    const nextWrapped = Boolean(isWrapped);
+
+    root.setAttribute("data-wrap", nextWrapped ? "true" : "false");
+
+    if (wrapButton) {
+      wrapButton.setAttribute("aria-pressed", nextWrapped ? "true" : "false");
+      wrapButton.setAttribute(
+        "aria-label",
+        nextWrapped ? "Disable line wrap" : "Wrap long lines"
+      );
+      wrapButton.setAttribute(
+        "title",
+        nextWrapped ? "Disable line wrap" : "Wrap long lines"
+      );
+    }
+
+    if (wrapIcon) {
+      wrapIcon.textContent = "wrap_text";
+    }
+
+    requestAnimationFrame(function () {
+      const code = normalizeSource(source.value);
+
+      updateLineNumbers(code);
+
+      if (lineBox && preEl) {
+        lineBox.scrollTop = preEl.scrollTop;
+      }
+    });
+  }
+
+  function toggleWrapState() {
+    const restoreScroll = createScrollSnapshot();
+    const current = root.getAttribute("data-wrap") === "true";
+
+    applyWrapState(!current);
+    restoreScrollLater(restoreScroll);
+
+    requestAnimationFrame(function () {
+      if (lineBox && preEl) {
+        lineBox.scrollTop = preEl.scrollTop;
+      }
+
+      restoreScroll();
+    });
+  }
+
+  function showToast(type) {
+    if (!toast || !toastIcon || !toastText) {
+      return;
+    }
+
+    if (toastTimer) {
+      clearTimeout(toastTimer);
+    }
+
+    if (type === "error") {
+      toastIcon.textContent = "error";
+      toastText.textContent = "Copy failed";
+      toast.setAttribute("data-type", "error");
+    } else {
+      toastIcon.textContent = "check_circle";
+      toastText.textContent = "Copied";
+      toast.setAttribute("data-type", "success");
+    }
+
+    toast.classList.add("is-visible");
+
+    toastTimer = setTimeout(function () {
+      toast.classList.remove("is-visible");
+    }, 3000);
+  }
+
+  function injectCss() {
+    const prismTheme = document.createElement("link");
+    prismTheme.rel = "stylesheet";
+    prismTheme.href = "https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css";
+    document.head.appendChild(prismTheme);
+  }
+
+  function loadScript(src) {
+    return new Promise(function (resolve, reject) {
+      const script = document.createElement("script");
+      script.src = src;
+      script.onload = resolve;
+      script.onerror = reject;
+      document.body.appendChild(script);
+    });
+  }
+
+  function registerWikidotGrammar() {
+    if (!window.Prism) {
+      return;
+    }
+
+    const variableToken = {
+      pattern: /\{\$[a-zA-Z0-9_-]+\}/,
+      alias: "wd-variable",
+      inside: {
+        "punctuation": /^\{\$|\}$/,
+        "wd-variable-name": /[a-zA-Z0-9_-]+/
+      }
+    };
+
+    const wikidotTemplateToken = {
+      pattern: /%%[a-zA-Z0-9_:-]+(?:\{[^}\r\n]*\})?%%/,
+      alias: "wd-template",
+      inside: {
+        "punctuation": /^%%|%%$/,
+        "wd-template-arg": /\{[^}\r\n]*\}/,
+        "wd-template-name": /[a-zA-Z0-9_:-]+/
+      }
+    };
+
+    const formattingTokens = [
+      {
+        pattern: /\*\*[^*\n]+?\*\*/,
+        alias: "wd-format",
+        inside: {
+          "wd-format-marker": /^\*\*|\*\*$/
+        }
+      },
+      {
+        pattern: /\/\/[^/\n]+?\/\//,
+        alias: "wd-format",
+        inside: {
+          "wd-format-marker": /^\/\/|\/\/$/
+        }
+      },
+      {
+        pattern: /__[^_\n]+?__/,
+        alias: "wd-format",
+        inside: {
+          "wd-format-marker": /^__|__$/
+        }
+      },
+      {
+        pattern: /--[^-\n]+?--/,
+        alias: "wd-format",
+        inside: {
+          "wd-format-marker": /^--|--$/
+        }
+      },
+      {
+        pattern: /\{\{[\s\S]*?\}\}/,
+        greedy: true,
+        alias: "wd-format",
+        inside: {
+          "wd-format-marker": /^\{\{|\}\}$/
+        }
+      }
+    ];
+
+    const tripleLinkToken = {
+      pattern: /\[\[\[[\s\S]*?\]\]\]/,
+      greedy: true,
+      alias: "wd-link",
+      inside: {
+        "wd-link-label": {
+          pattern: /(\|[^\S\r\n]*)[^\]]+(?=\]\]\]$)/,
+          lookbehind: true
+        },
+        "wd-link-page": {
+          pattern: /(^\[\[\[\s*)[^|\]\r\n]+/,
+          lookbehind: true
+        },
+        "wd-link-separator": /\|/,
+        "punctuation": /\[\[\[|\]\]\]/
+      }
+    };
+
+    const singleBracketLinkTarget =
+      "\\*?(?:(?:[a-z][a-z0-9+.-]*:\\/\\/|\\/)[^\\s\\]]+|#[^\\s\\]]*|[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,})";
+
+    const externalLinkToken = {
+      pattern: new RegExp(
+        "\\[(?!!--)(?:" + singleBracketLinkTarget + ")(?:[^\\]\\r\\n]*)\\]",
+        "i"
+      ),
+      greedy: true,
+      alias: "wd-link",
+      inside: {
+        "wd-link-label": {
+          pattern: new RegExp(
+            "(^\\[(?:" + singleBracketLinkTarget + ")[^\\S\\r\\n]+)[^\\]]+(?=\\]$)",
+            "i"
+          ),
+          lookbehind: true
+        },
+        "wd-link-url": {
+          pattern: new RegExp("(^\\[)" + singleBracketLinkTarget, "i"),
+          lookbehind: true
+        },
+        "punctuation": /^\[|\]$/
+      }
+    };
+
+    const bareUrlToken = {
+      pattern: /(^|[^\w])\*?[a-z][a-z0-9+.-]*:\/\/[^\s<>\]]+/i,
+      lookbehind: true,
+      alias: "wd-link-url"
+    };
+
+    const colorTextInlineTokens = {
+      "triple-link": tripleLinkToken,
+      "external-link": externalLinkToken,
+      "bare-url": bareUrlToken,
+      "formatting": formattingTokens,
+      "template-variable": wikidotTemplateToken,
+      "variable": variableToken
+    };
+
+    const colorToken = {
+      pattern: /##\s*[a-zA-Z0-9#_-]+\s*\|[\s\S]*?##/,
+      greedy: true,
+      alias: "wd-color",
+      inside: {
+        "wd-color-name": {
+          pattern: /(^##\s*)[a-zA-Z0-9#_-]+/,
+          lookbehind: true
+        },
+        "wd-color-text": {
+          pattern: /(\|\s*)[\s\S]+(?=##$)/,
+          lookbehind: true,
+          inside: colorTextInlineTokens
+        },
+        "punctuation": /^##|##$|\|/
+      }
+    };
+
+    const wikidotInlineTokens = {
+      "triple-link": tripleLinkToken,
+      "external-link": externalLinkToken,
+      "bare-url": bareUrlToken,
+      "color": colorToken,
+      "formatting": formattingTokens,
+      "template-variable": wikidotTemplateToken,
+      "variable": variableToken
+    };
+
+    const moduleBlockToken = {
+      pattern: /\[\[module\b(?:[^\]]*)\]\]/i,
+      greedy: true,
+      alias: "wd-block",
+      inside: {
+        "wd-module-name": {
+          pattern: /(^\[\[module\b[^\S\r\n]+)[^\]\s]+/i,
+          lookbehind: true
+        },
+        "wd-module-keyword": {
+          pattern: /(^\[\[)module\b/i,
+          lookbehind: true
+        },
+        "wd-attribute": /\b[a-zA-Z0-9_-]+(?=\s*=)/,
+        "string": {
+          pattern: /"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'/,
+          greedy: true
+        },
+        "template-variable": wikidotTemplateToken,
+        "variable": variableToken,
+        "operator": /=/,
+        "punctuation": /\[\[|\]\]/
+      }
+    };
+
+    Prism.languages.wikidot = {
+      "comment": {
+        pattern: /\[!--[\s\S]*?--\]/,
+        greedy: true
+      },
+
+      "code-block": {
+        pattern: /(\[\[code(?:[^\]]*)\]\])[\s\S]*?(\[\[\/code\]\])/i,
+        greedy: true,
+        inside: {
+          "wd-code-open": {
+            pattern: /^\[\[code(?:[^\]]*)\]\]/i,
+            alias: "wd-block",
+            inside: {
+              "wd-block-name": {
+                pattern: /(^\[\[)code/i,
+                lookbehind: true
+              },
+              "wd-attribute": /\b[a-zA-Z0-9_-]+(?=\s*=)/,
+              "string": {
+                pattern: /"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'/,
+                greedy: true
+              },
+              "operator": /=/,
+              "punctuation": /^\[\[|\]\]$/
+            }
+          },
+          "wd-code-close": {
+            pattern: /\[\[\/code\]\]$/i,
+            alias: "wd-close",
+            inside: {
+              "punctuation": /\[\[\/|\]\]/,
+              "wd-block-name": /code/i
+            }
+          }
+        }
+      },
+
+      "html-block": {
+        pattern: /(\[\[html\]\])[\s\S]*?(\[\[\/html\]\])/i,
+        greedy: true,
+        inside: {
+          "wd-html-open": {
+            pattern: /^\[\[html\]\]/i,
+            alias: "wd-block",
+            inside: {
+              "wd-block-name": {
+                pattern: /(^\[\[)html/i,
+                lookbehind: true
+              },
+              "punctuation": /^\[\[|\]\]$/
+            }
+          },
+          "wd-html-close": {
+            pattern: /\[\[\/html\]\]$/i,
+            alias: "wd-close",
+            inside: {
+              "punctuation": /\[\[\/|\]\]/,
+              "wd-block-name": /html/i
+            }
+          }
+        }
+      },
+
+      "heading": {
+        pattern: /^\+{1,6}[^\S\r\n]+.+$/m,
+        alias: "wd-heading",
+        inside: {
+          "wd-heading-marker": /^\+{1,6}/,
+          "wd-heading-text": {
+            pattern: /(^\+{1,6}[^\S\r\n]+).+/,
+            lookbehind: true,
+            inside: wikidotInlineTokens
+          }
+        }
+      },
+
+      "table": {
+        pattern: /^[^\S\r\n]*\|\|.*$/m,
+        alias: "wd-table",
+        inside: {
+          "triple-link": tripleLinkToken,
+          "external-link": externalLinkToken,
+          "bare-url": bareUrlToken,
+          "color": colorToken,
+          "formatting": formattingTokens,
+          "template-variable": wikidotTemplateToken,
+          "variable": variableToken,
+          "wd-table-header-text": {
+            pattern: /(~[^\S\r\n]*)[^|]+/,
+            lookbehind: true
+          },
+          "wd-table-pipe": {
+            pattern: /\|\|/,
+            alias: "punctuation"
+          },
+          "wd-table-header-marker": /~/
+        }
+      },
+
+      "list": {
+        pattern: /^[^\S\r\n]*(?:\*|#|-)[^\S\r\n]+/m,
+        alias: "wd-list"
+      },
+
+      "horizontal-rule": {
+        pattern: /^-{4,}$/m,
+        alias: "punctuation"
+      },
+
+      "triple-link": tripleLinkToken,
+
+      "external-link": externalLinkToken,
+
+      "bare-url": bareUrlToken,
+
+      "closing-block": {
+        pattern: /\[\[\/[a-zA-Z][a-zA-Z0-9:_-]*\]\]/,
+        greedy: true,
+        alias: "wd-close",
+        inside: {
+          "punctuation": /\[\[\/|\]\]/,
+          "wd-block-name": /[a-zA-Z][a-zA-Z0-9:_-]*/
+        }
+      },
+
+      "include-block": {
+        pattern: /\[\[include(?:[^\]])*\]\]/i,
+        greedy: true,
+        alias: "wd-include",
+        inside: {
+          "wd-include-target": {
+            pattern: /(^\[\[include[^\S\r\n]+)[^\s|\]\r\n]+/i,
+            lookbehind: true
+          },
+          "wd-include-keyword": {
+            pattern: /(^\[\[)include\b/i,
+            lookbehind: true
+          },
+          "wd-param-name": {
+            pattern: /(\|)[a-zA-Z0-9_-]+(?=(?:\{\$[a-zA-Z0-9_-]+\})?\s*=)/,
+            lookbehind: true
+          },
+          "wd-param-value": {
+            pattern: /(=\s*)[^\r\n|]+/,
+            lookbehind: true,
+            inside: wikidotInlineTokens
+          },
+          "template-variable": wikidotTemplateToken,
+          "variable": variableToken,
+          "string": {
+            pattern: /"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'/,
+            greedy: true
+          },
+          "operator": /=/,
+          "punctuation": /\[\[|\]\]|\|/
+        }
+      },
+
+      "module-block": moduleBlockToken,
+
+      "user-block": {
+        pattern: /\[\[user\b(?:[^\]]*)\]\]/i,
+        greedy: true,
+        alias: "wd-block",
+        inside: {
+          "wd-block-name": {
+            pattern: /(^\[\[)user\b/i,
+            lookbehind: true
+          },
+          "template-variable": wikidotTemplateToken,
+          "variable": variableToken,
+          "punctuation": /\[\[|\]\]/
+        }
+      },
+
+      "tab-block": {
+        pattern: /\[\[tab\b(?:[^\]]*)\]\]/i,
+        greedy: true,
+        alias: "wd-block",
+        inside: {
+          "wd-tab-title": {
+            pattern: /(^\[\[tab[^\S\r\n]+)[^\]]+(?=\]\]$)/i,
+            lookbehind: true
+          },
+          "wd-tab-keyword": {
+            pattern: /(^\[\[)tab\b/i,
+            lookbehind: true
+          },
+          "punctuation": /\[\[|\]\]/
+        }
+      },
+
+      "block": {
+        pattern: /\[\[(?!\/)[a-zA-Z][a-zA-Z0-9:_-]*(?:[^\]]*)\]\]/,
+        greedy: true,
+        alias: "wd-block",
+        inside: {
+          "wd-block-name": {
+            pattern: /(^\[\[)[a-zA-Z][a-zA-Z0-9:_-]*/,
+            lookbehind: true
+          },
+          "wd-param-name": {
+            pattern: /(\|)[a-zA-Z0-9_-]+(?=(?:\{\$[a-zA-Z0-9_-]+\})?\s*=)/,
+            lookbehind: true
+          },
+          "wd-attribute": /\b[a-zA-Z0-9_-]+(?=\s*=)/,
+          "template-variable": wikidotTemplateToken,
+          "variable": variableToken,
+          "string": {
+            pattern: /"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'/,
+            greedy: true
+          },
+          "operator": /=/,
+          "punctuation": /\[\[|\]\]|\|/
+        }
+      },
+
+      "template-variable": wikidotTemplateToken,
+
+      "variable": variableToken,
+
+      "color": colorToken,
+
+      "formatting": formattingTokens,
+
+      "footnote": {
+        pattern: /\[\[footnote\]\][\s\S]*?\[\[\/footnote\]\]/i,
+        greedy: true,
+        alias: "wd-block",
+        inside: {
+          "wd-footnote-open": {
+            pattern: /^\[\[footnote\]\]/i,
+            alias: "wd-block",
+            inside: {
+              "wd-block-name": {
+                pattern: /(^\[\[)footnote/i,
+                lookbehind: true
+              },
+              "punctuation": /^\[\[|\]\]$/
+            }
+          },
+          "wd-footnote-close": {
+            pattern: /\[\[\/footnote\]\]$/i,
+            alias: "wd-close",
+            inside: {
+              "punctuation": /\[\[\/|\]\]/,
+              "wd-block-name": /footnote/i
+            }
+          }
+        }
+      },
+
+      "bibliography": {
+        pattern: /\[\[bibliography\]\][\s\S]*?\[\[\/bibliography\]\]/i,
+        greedy: true,
+        alias: "wd-block",
+        inside: {
+          "wd-bibliography-open": {
+            pattern: /^\[\[bibliography\]\]/i,
+            alias: "wd-block",
+            inside: {
+              "wd-block-name": {
+                pattern: /(^\[\[)bibliography/i,
+                lookbehind: true
+              },
+              "punctuation": /^\[\[|\]\]$/
+            }
+          },
+          "wd-bibliography-close": {
+            pattern: /\[\[\/bibliography\]\]$/i,
+            alias: "wd-close",
+            inside: {
+              "punctuation": /\[\[\/|\]\]/,
+              "wd-block-name": /bibliography/i
+            }
+          }
+        }
+      }
+    };
+
+    Prism.languages.wd = Prism.languages.wikidot;
+    Prism.languages.wiki = Prism.languages.wikidot;
+  }
+
+  function normalizeLanguage(lang) {
+    const key = String(lang || "plaintext").toLowerCase().trim();
+
+    const aliases = {
+      "wd": "wikidot",
+      "wiki": "wikidot",
+      "html": "markup",
+      "xml": "markup",
+      "svg": "markup",
+      "js": "javascript",
+      "ts": "typescript",
+      "sh": "bash",
+      "shell": "bash",
+      "py": "python",
+      "rb": "ruby",
+      "yml": "yaml"
+    };
+
+    return aliases[key] || key || "plaintext";
+  }
+
+  function normalizeSource(text) {
+    let result = String(text || "");
+
+    result = result.replace(/^\r?\n/, "");
+    result = result.replace(/\r?\n\s*$/, "");
+
+    return result;
+  }
+
+  function getCodeLineHeightPx() {
+    if (!output) {
+      return 20;
+    }
+
+    const computed = window.getComputedStyle(output);
+    const fontSize = parseFloat(computed.fontSize) || 13;
+    const lineHeight = parseFloat(computed.lineHeight);
+
+    if (Number.isFinite(lineHeight)) {
+      return lineHeight;
+    }
+
+    return fontSize * 1.55;
+  }
+
+  function getPreContentWidth() {
+    if (!preEl) {
+      return 80;
+    }
+
+    const computed = window.getComputedStyle(preEl);
+    const paddingLeft = parseFloat(computed.paddingLeft) || 0;
+    const paddingRight = parseFloat(computed.paddingRight) || 0;
+    const width = preEl.clientWidth - paddingLeft - paddingRight;
+
+    return Math.max(40, width);
+  }
+
+  function createLineMeasureMirror(width) {
+    const computed = output
+      ? window.getComputedStyle(output)
+      : null;
+
+    const mirror = document.createElement("div");
+
+    mirror.setAttribute("aria-hidden", "true");
+
+    mirror.style.position = "absolute";
+    mirror.style.left = "-99999px";
+    mirror.style.top = "0";
+    mirror.style.visibility = "hidden";
+    mirror.style.pointerEvents = "none";
+    mirror.style.whiteSpace = "pre-wrap";
+    mirror.style.overflowWrap = "anywhere";
+    mirror.style.wordBreak = "normal";
+    mirror.style.boxSizing = "border-box";
+    mirror.style.width = width + "px";
+
+    if (computed) {
+      mirror.style.fontFamily = computed.fontFamily;
+      mirror.style.fontSize = computed.fontSize;
+      mirror.style.fontWeight = computed.fontWeight;
+      mirror.style.fontStyle = computed.fontStyle;
+      mirror.style.lineHeight = computed.lineHeight;
+      mirror.style.letterSpacing = computed.letterSpacing;
+      mirror.style.tabSize = computed.tabSize || "8";
+    } else {
+      mirror.style.fontFamily =
+        'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace';
+      mirror.style.fontSize = "13px";
+      mirror.style.lineHeight = "1.55";
+      mirror.style.tabSize = "8";
+    }
+
+    document.body.appendChild(mirror);
+
+    return mirror;
+  }
+
+  function measureWrappedRowCount(mirror, line, lineHeight) {
+    mirror.textContent = line.length ? line : " ";
+
+    const height = mirror.getBoundingClientRect().height;
+    const rows = Math.round(height / lineHeight);
+
+    return Math.max(1, rows || 1);
+  }
+
+  function updateSimpleLineNumbers(code) {
+    if (!lineBox) {
+      return;
+    }
+
+    const normalized = String(code || "");
+    const lineCount = normalized.length
+      ? normalized.split(/\r\n|\r|\n/).length
+      : 1;
+
+    let html = "";
+
+    for (let i = 1; i <= lineCount; i++) {
+      html += "<span>" + i + "</span>";
+    }
+
+    lineBox.innerHTML = html;
+  }
+
+  function updateWrappedLineNumbers(code) {
+    if (!lineBox || !preEl || !output) {
+      updateSimpleLineNumbers(code);
+      return;
+    }
+
+    const normalized = String(code || "");
+    const lines = normalized.length
+      ? normalized.split(/\r\n|\r|\n/)
+      : [""];
+
+    const lineHeight = getCodeLineHeightPx();
+    const width = getPreContentWidth();
+    const mirror = createLineMeasureMirror(width);
+
+    let html = "";
+
+    for (let i = 0; i < lines.length; i++) {
+      const rows = measureWrappedRowCount(mirror, lines[i], lineHeight);
+
+      html += "<span>" + (i + 1) + "</span>";
+
+      for (let j = 1; j < rows; j++) {
+        html += "<span></span>";
+      }
+    }
+
+    document.body.removeChild(mirror);
+
+    lineBox.innerHTML = html;
+  }
+
+  function updateLineNumbers(code) {
+    const isWrapped = root && root.getAttribute("data-wrap") === "true";
+
+    if (isWrapped) {
+      updateWrappedLineNumbers(code);
+    } else {
+      updateSimpleLineNumbers(code);
+    }
+
+    if (lineBox && preEl) {
+      lineBox.scrollTop = preEl.scrollTop;
+    }
+  }
+
+  function scheduleLineNumberRefresh() {
+    if (lineNumberResizeTimer) {
+      clearTimeout(lineNumberResizeTimer);
+    }
+
+    lineNumberResizeTimer = setTimeout(function () {
+      const code = normalizeSource(source.value);
+
+      updateLineNumbers(code);
+    }, 80);
+  }
+
+  function setupLineNumberResizeObserver() {
+    if (!preEl) {
+      return;
+    }
+
+    if (window.ResizeObserver) {
+      lineNumberResizeObserver = new ResizeObserver(function () {
+        if (root.getAttribute("data-wrap") === "true") {
+          scheduleLineNumberRefresh();
+        }
+      });
+
+      lineNumberResizeObserver.observe(preEl);
+    } else {
+      window.addEventListener("resize", function () {
+        if (root.getAttribute("data-wrap") === "true") {
+          scheduleLineNumberRefresh();
+        }
+      });
+    }
+  }
+
+  function syncLineNumberScroll() {
+    if (!preEl || !lineBox) {
+      return;
+    }
+
+    preEl.addEventListener("scroll", function () {
+      lineBox.scrollTop = preEl.scrollTop;
+    });
+  }
+
+  function createScrollSnapshot() {
+    const active = document.activeElement;
+    const preScrollTop = preEl ? preEl.scrollTop : 0;
+    const preScrollLeft = preEl ? preEl.scrollLeft : 0;
+    const lineScrollTop = lineBox ? lineBox.scrollTop : 0;
+    const windowScrollX = window.scrollX || window.pageXOffset || 0;
+    const windowScrollY = window.scrollY || window.pageYOffset || 0;
+    const bodyScrollTop = document.body ? document.body.scrollTop : 0;
+    const bodyScrollLeft = document.body ? document.body.scrollLeft : 0;
+    const docScrollTop = document.documentElement ? document.documentElement.scrollTop : 0;
+    const docScrollLeft = document.documentElement ? document.documentElement.scrollLeft : 0;
+
+    return function restoreScroll() {
+      if (preEl) {
+        preEl.scrollTop = preScrollTop;
+        preEl.scrollLeft = preScrollLeft;
+      }
+
+      if (lineBox) {
+        lineBox.scrollTop = lineScrollTop || preScrollTop;
+      }
+
+      if (document.body) {
+        document.body.scrollTop = bodyScrollTop;
+        document.body.scrollLeft = bodyScrollLeft;
+      }
+
+      if (document.documentElement) {
+        document.documentElement.scrollTop = docScrollTop;
+        document.documentElement.scrollLeft = docScrollLeft;
+      }
+
+      window.scrollTo(windowScrollX, windowScrollY);
+
+      if (active && typeof active.focus === "function") {
+        try {
+          active.focus({ preventScroll: true });
+        } catch (error) {}
+      }
+    };
+  }
+
+  function restoreScrollLater(restoreScroll) {
+    if (!restoreScroll) {
+      return;
+    }
+
+    restoreScroll();
+
+    requestAnimationFrame(function () {
+      restoreScroll();
+
+      requestAnimationFrame(function () {
+        restoreScroll();
+      });
+    });
+
+    setTimeout(restoreScroll, 80);
+  }
+
+  function copyWithFallback(text) {
+    const temp = document.createElement("textarea");
+
+    temp.value = text;
+    temp.setAttribute("readonly", "readonly");
+    temp.setAttribute("aria-hidden", "true");
+
+    temp.style.position = "fixed";
+    temp.style.left = "0";
+    temp.style.top = "0";
+    temp.style.width = "1px";
+    temp.style.height = "1px";
+    temp.style.opacity = "0";
+    temp.style.pointerEvents = "none";
+    temp.style.zIndex = "-1";
+
+    document.body.appendChild(temp);
+
+    try {
+      temp.focus({ preventScroll: true });
+    } catch (error) {
+      temp.focus();
+    }
+
+    temp.select();
+    temp.setSelectionRange(0, temp.value.length);
+
+    const result = document.execCommand("copy");
+    document.body.removeChild(temp);
+
+    return result;
+  }
+
+  function renderCode() {
+    const language = normalizeLanguage(langRaw);
+    const code = normalizeSource(source.value);
+
+    output.className = "language-" + language;
+    output.textContent = code;
+
+    if (window.Prism) {
+      registerWikidotGrammar();
+      Prism.highlightElement(output);
+    }
+
+    updateLineNumbers(code);
+  }
+
+  async function copyCode() {
+    const code = normalizeSource(source.value);
+    const restoreScroll = createScrollSnapshot();
+
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        await navigator.clipboard.writeText(code);
+      } else {
+        copyWithFallback(code);
+      }
+
+      restoreScrollLater(restoreScroll);
+      showToast("success");
+    } catch (error) {
+      restoreScrollLater(restoreScroll);
+      showToast("error");
+    }
+  }
+
+  async function init() {
+    initTheme();
+    applyExpandedState(false);
+    applyWrapState(false);
+    injectCss();
+
+    try {
+      await loadScript("https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-core.min.js");
+      await loadScript("https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js");
+
+      if (window.Prism && Prism.plugins && Prism.plugins.autoloader) {
+        Prism.plugins.autoloader.languages_path =
+          "https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/";
+      }
+
+      renderCode();
+      syncLineNumberScroll();
+      setupLineNumberResizeObserver();
+    } catch (error) {
+      output.textContent = "Failed to initialize codebox.";
+    }
+  }
+
+  if (copyButton) {
+    copyButton.addEventListener("mousedown", function (event) {
+      event.preventDefault();
+    });
+
+    copyButton.addEventListener("click", copyCode);
+  }
+
+  if (expandButton) {
+    expandButton.addEventListener("mousedown", function (event) {
+      event.preventDefault();
+    });
+
+    expandButton.addEventListener("click", toggleExpandedState);
+  }
+
+  if (wrapButton) {
+    wrapButton.addEventListener("mousedown", function (event) {
+      event.preventDefault();
+    });
+
+    wrapButton.addEventListener("click", toggleWrapState);
+  }
+
+  init();
+})();
+</script>
+[[/html]]

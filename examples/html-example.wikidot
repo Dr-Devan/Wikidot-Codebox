@@ -1,0 +1,50 @@
+++ HTML Codebox Example
+
+[[include snippet:codebox
+|title=HTML Form And Textarea Example
+|lang=html
+]]
+
+&lt;form class="memo-form" action="/submit" method="post" data-mode="demo"&gt;
+  &lt;fieldset&gt;
+    &lt;legend&gt;Memo Form&lt;/legend&gt;
+
+    &lt;label for="memo"&gt;Memo&lt;/label&gt;
+    &lt;textarea id="memo" name="memo" rows="4" cols="40" placeholder="Write memo here..."&gt;
+hello
+line 2
+&lt;strong&gt;literal html inside textarea&lt;/strong&gt;
+    &lt;/textarea&gt;
+
+    &lt;label for="category"&gt;Category&lt;/label&gt;
+    &lt;select id="category" name="category"&gt;
+      &lt;option value="general"&gt;General&lt;/option&gt;
+      &lt;option value="bug"&gt;Bug&lt;/option&gt;
+      &lt;option value="feature"&gt;Feature&lt;/option&gt;
+    &lt;/select&gt;
+
+    &lt;input type="hidden" name="token" value="abc123"&gt;
+
+    &lt;button type="submit"&gt;Submit&lt;/button&gt;
+    &lt;button type="reset"&gt;Reset&lt;/button&gt;
+  &lt;/fieldset&gt;
+&lt;/form&gt;
+
+&lt;section class="preview" data-state="expanded"&gt;
+  &lt;h2&gt;Preview&lt;/h2&gt;
+  &lt;p&gt;This paragraph contains &lt;strong&gt;bold&lt;/strong&gt;, &lt;em&gt;italic&lt;/em&gt;, and an inline link.&lt;/p&gt;
+  &lt;a href="https://example.com/path?q=test&amp;amp;mode=demo" target="_blank" rel="noopener"&gt;External link&lt;/a&gt;
+&lt;/section&gt;
+
+&lt;script&gt;
+  const form = document.querySelector(".memo-form");
+
+  form.addEventListener("submit", function (event) {
+    event.preventDefault();
+
+    const memo = form.querySelector("#memo").value;
+    console.log("memo:", memo);
+  });
+&lt;/script&gt;
+
+[[include snippet:codebox-end]]

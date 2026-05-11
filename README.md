@@ -5,16 +5,19 @@ A stable, unified, `lang`-based codebox system for Wikidot pages.
 ---
 
 ## Navigation
-
-- [English](#english)
-- [한국어](#한국어)
-- [日本語](#日本語)
+[English](#english) | [한국어](#한국어) | [日本語](#日本語)
 
 ---
 
 <a id="english"></a>
 
 # English
+
+## AI Assistance Notice
+
+This project was created with AI assistance.
+
+---
 
 ## Overview
 
@@ -797,6 +800,12 @@ Stable.
 <a id="한국어"></a>
 
 # 한국어
+
+## AI 작성 고지
+
+이 프로젝트의 코드와 문서는 AI의 도움을 받아 작성되었습니다.
+
+---
 
 ## 개요
 
@@ -1581,6 +1590,12 @@ Stable.
 <a id="日本語"></a>
 
 # 日本語
+
+## AI 支援に関する表記
+
+このプロジェクトのコードとドキュメントは、AI の支援を受けて作成されました。
+
+---
 
 ## 概要
 
